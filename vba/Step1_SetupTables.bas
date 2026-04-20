@@ -101,10 +101,10 @@ Private Sub CreateTable_Components(db As DAO.Database)
         "Voltage_Rating   TEXT(30), " & _
         "Current_Rating   TEXT(30), " & _
         "Tolerance        TEXT(20), " & _
-        "Datasheet_URL    TEXT(500), " & _
+        "Datasheet_URL    MEMO, " & _
         "LifecycleID      LONG NOT NULL, " & _
         "QualificationID  LONG NOT NULL, " & _
-        "IsPreferred      YESNO DEFAULT No, " & _
+        "IsPreferred      YESNO, " & _
         "CreatedDate      DATETIME, " & _
         "ModifiedDate     DATETIME, " & _
         "Notes            MEMO" & _
@@ -155,7 +155,7 @@ Private Sub CreateTable_BOM_Headers(db As DAO.Database)
         "BOM_Revision   TEXT(20), " & _
         "ImportDate     DATETIME, " & _
         "ImportedBy     TEXT(100), " & _
-        "SourceFile     TEXT(500), " & _
+        "SourceFile     MEMO, " & _
         "RowCount       INTEGER DEFAULT 0, " & _
         "Status         TEXT(20) DEFAULT 'Pending', " & _
         "Notes          MEMO" & _
@@ -173,8 +173,8 @@ Private Sub CreateTable_BOM_Items(db As DAO.Database)
         "Manufacturer_Raw TEXT(100), " & _
         "Description_Raw  TEXT(255), " & _
         "Quantity         DOUBLE DEFAULT 1, " & _
-        "RefDes           TEXT(500), " & _
-        "Notes            TEXT(500), " & _
+        "RefDes           MEMO, " & _
+        "Notes            TEXT(255), " & _
         "MatchStatus      TEXT(20) DEFAULT 'Unmatched'" & _
         ")", dbFailOnError
     db.Execute "CREATE INDEX idx_item_header ON BOM_Items (HeaderID)", dbFailOnError
@@ -205,8 +205,8 @@ Private Sub CreateTable_ImportStaging(db As DAO.Database)
         "Manufacturer_Raw TEXT(100), " & _
         "Description_Raw  TEXT(255), " & _
         "Quantity         DOUBLE DEFAULT 1, " & _
-        "RefDes           TEXT(500), " & _
-        "Notes            TEXT(500), " & _
+        "RefDes           MEMO, " & _
+        "Notes            TEXT(255), " & _
         "MatchStatus      TEXT(20) DEFAULT 'Unmatched', " & _
         "ComponentID      LONG, " & _
         "UserAction       TEXT(20) DEFAULT 'Auto'" & _
