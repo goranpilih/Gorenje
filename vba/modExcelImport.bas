@@ -291,7 +291,7 @@ Public Function CommitImport( _
 
     ' 1. Write BOM_Header
     sql = "INSERT INTO BOM_Headers " & _
-          "(ProjectID, BOM_Revision, ImportDate, ImportedBy, SourceFile, Status) " & _
+          "(ProjectID, BOM_Revision, ImportDate, ImportedBy, SourceFile, ImportStatus) " & _
           "VALUES (" & projectID & ", '" & Esc(bomRev) & "', Now(), " & _
           "'" & Esc(Environ("USERNAME")) & "', " & _
           "'" & Esc(srcFile) & "', 'Pending')"
@@ -361,7 +361,7 @@ Public Function CommitImport( _
     rsStage.Close
 
     ' 4. Finalise header
-    db.Execute "UPDATE BOM_Headers SET Status = 'Committed', RowCount = " & rowCount & _
+    db.Execute "UPDATE BOM_Headers SET ImportStatus = 'Committed', RowCount = " & rowCount & _
                ", ImportDate = Now() WHERE HeaderID = " & headerID, dbFailOnError
 
     WriteAudit db, "IMPORT", "BOM_Headers", headerID, "SourceFile", "", srcFile
@@ -431,7 +431,7 @@ End Function
 Private Sub WriteAudit(db As DAO.Database, action As String, tbl As String, _
                         recID As Long, fld As String, oldV As String, newV As String)
     On Error Resume Next
-    db.Execute "INSERT INTO Audit_Log (LogDate, UserName, Action, TableName, RecordID, " & _
+    db.Execute "INSERT INTO Audit_Log (LogDate, UserName, LogAction, TableName, RecordID, " & _
                "FieldName, OldValue, NewValue) VALUES (Now(), " & _
                "'" & Esc(Environ("USERNAME")) & "', '" & action & "', '" & tbl & "', " & _
                recID & ", '" & fld & "', '" & Esc(oldV) & "', '" & Esc(newV) & "')", dbFailOnError

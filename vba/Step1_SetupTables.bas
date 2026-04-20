@@ -112,9 +112,9 @@ Private Sub CreateT_Components(db As DAO.Database)
         "  MPN             TEXT(100)," & _
         "  ManufacturerID  LONG," & _
         "  Description     TEXT(255)," & _
-        "  ComponentType   TEXT(50)," & _
-        "  Package         TEXT(50)," & _
-        "  Value           TEXT(50)," & _
+        "  ComponentType    TEXT(50)," & _
+        "  Package          TEXT(50)," & _
+        "  ComponentValue   TEXT(50)," & _
         "  Voltage_Rating  TEXT(30)," & _
         "  Current_Rating  TEXT(30)," & _
         "  Tolerance       TEXT(20)," & _
@@ -162,9 +162,9 @@ Private Sub CreateT_Projects(db As DAO.Database)
         "  ProjectCode TEXT(50)," & _
         "  ProjectName TEXT(200)," & _
         "  Description MEMO," & _
-        "  PCB_Rev     TEXT(20)," & _
-        "  Owner       TEXT(100)," & _
-        "  Status      TEXT(30)," & _
+        "  PCB_Rev        TEXT(20)," & _
+        "  Owner          TEXT(100)," & _
+        "  ProjectStatus  TEXT(30)," & _
         "  CreatedDate DATETIME," & _
         "  Notes       MEMO" & _
         ")"
@@ -181,9 +181,9 @@ Private Sub CreateT_BOM_Headers(db As DAO.Database)
         "  BOM_Revision TEXT(20)," & _
         "  ImportDate   DATETIME," & _
         "  ImportedBy   TEXT(100)," & _
-        "  SourceFile   MEMO," & _
-        "  RowCount     INTEGER," & _
-        "  Status       TEXT(20)," & _
+        "  SourceFile    MEMO," & _
+        "  RowCount      INTEGER," & _
+        "  ImportStatus  TEXT(20)," & _
         "  Notes        MEMO" & _
         ")"
     RunSQL db, "BOM_Headers (index)", _
@@ -217,9 +217,9 @@ Private Sub CreateT_AuditLog(db As DAO.Database)
         "CREATE TABLE Audit_Log (" & _
         "  LogID     AUTOINCREMENT CONSTRAINT PK_AuditLog PRIMARY KEY," & _
         "  LogDate   DATETIME," & _
-        "  UserName  TEXT(100)," & _
-        "  Action    TEXT(50)," & _
-        "  TableName TEXT(50)," & _
+        "  UserName   TEXT(100)," & _
+        "  LogAction  TEXT(50)," & _
+        "  TableName  TEXT(50)," & _
         "  RecordID  LONG," & _
         "  FieldName TEXT(100)," & _
         "  OldValue  MEMO," & _

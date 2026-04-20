@@ -78,8 +78,8 @@ Private Sub CreateQuery_ObsoleteInProjects()
         "INNER JOIN BOM_Headers AS bh ON bi.HeaderID = bh.HeaderID " & _
         "INNER JOIN Projects AS p ON bh.ProjectID = p.ProjectID " & _
         "WHERE ls.StatusName IN ('Obsolete','NRND','Discontinued') " & _
-        "AND p.Status = 'Active' " & _
-        "AND bh.Status = 'Committed' " & _
+        "AND p.ProjectStatus = 'Active' " & _
+        "AND bh.ImportStatus = 'Committed' " & _
         "ORDER BY ls.StatusName, c.MPN;")
 End Sub
 
@@ -97,7 +97,7 @@ End Sub
 Private Sub CreateQuery_BOMExtract()
     Call SaveQuery("qry_BOMExtract", _
         "SELECT p.ProjectCode, p.ProjectName, bh.BOM_Revision, bh.ImportDate, " & _
-        "c.MPN, m.ManufacturerName, c.Description, c.ComponentType, c.Package, c.Value, " & _
+        "c.MPN, m.ManufacturerName, c.Description, c.ComponentType, c.Package, c.ComponentValue, " & _
         "bi.Quantity, bi.RefDes, bi.MatchStatus, " & _
         "ls.StatusName AS Lifecycle, qs.QualName AS QualStatus " & _
         "FROM ((((BOM_Items AS bi " & _
@@ -107,7 +107,7 @@ Private Sub CreateQuery_BOMExtract()
         "LEFT JOIN Manufacturers AS m ON c.ManufacturerID = m.ManufacturerID) " & _
         "LEFT JOIN Lifecycle_Status AS ls ON c.LifecycleID = ls.StatusID " & _
         "LEFT JOIN Qualification_Status AS qs ON c.QualificationID = qs.QualID " & _
-        "WHERE bh.Status = 'Committed' " & _
+        "WHERE bh.ImportStatus = 'Committed' " & _
         "ORDER BY p.ProjectCode, bi.RefDes;")
 End Sub
 
@@ -121,7 +121,7 @@ Private Sub CreateQuery_ImpactAnalysis()
         "INNER JOIN Lifecycle_Status AS ls ON c.LifecycleID = ls.StatusID) " & _
         "INNER JOIN BOM_Items AS bi ON bi.ComponentID = c.ComponentID " & _
         "INNER JOIN BOM_Headers AS bh ON bi.HeaderID = bh.HeaderID " & _
-        "WHERE bh.Status = 'Committed' " & _
+        "WHERE bh.ImportStatus = 'Committed' " & _
         "GROUP BY c.ComponentID, c.MPN, m.ManufacturerName, ls.StatusName " & _
         "ORDER BY UsedInProjects DESC;")
 End Sub
@@ -144,7 +144,7 @@ End Sub
 Private Sub CreateQuery_ComponentSearch()
     Call SaveQuery("qry_ComponentSearch", _
         "SELECT c.ComponentID, c.MPN, m.ManufacturerName, c.Description, " & _
-        "c.ComponentType, c.Package, c.Value, ls.StatusName AS Lifecycle, " & _
+        "c.ComponentType, c.Package, c.ComponentValue, ls.StatusName AS Lifecycle, " & _
         "qs.QualName AS QualStatus, c.IsPreferred " & _
         "FROM ((Components AS c " & _
         "INNER JOIN Manufacturers AS m ON c.ManufacturerID = m.ManufacturerID) " & _
@@ -156,12 +156,12 @@ End Sub
 Private Sub CreateQuery_ProjectList()
     Call SaveQuery("qry_ProjectList", _
         "SELECT p.ProjectID, p.ProjectCode, p.ProjectName, p.PCB_Rev, p.Owner, " & _
-        "p.Status, p.CreatedDate, " & _
+        "p.ProjectStatus, p.CreatedDate, " & _
         "Count(bh.HeaderID) AS ImportCount " & _
         "FROM Projects AS p " & _
         "LEFT JOIN BOM_Headers AS bh ON p.ProjectID = bh.ProjectID " & _
         "GROUP BY p.ProjectID, p.ProjectCode, p.ProjectName, p.PCB_Rev, " & _
-        "p.Owner, p.Status, p.CreatedDate " & _
+        "p.Owner, p.ProjectStatus, p.CreatedDate " & _
         "ORDER BY p.ProjectCode;")
 End Sub
 
@@ -169,9 +169,9 @@ Private Sub CreateQuery_RecentImports()
     Call SaveQuery("qry_RecentImports", _
         "SELECT TOP 20 bh.HeaderID, p.ProjectCode, p.ProjectName, " & _
         "bh.BOM_Revision, bh.ImportDate, bh.ImportedBy, " & _
-        "bh.SourceFile, bh.RowCount, bh.Status " & _
+        "bh.SourceFile, bh.RowCount, bh.ImportStatus " & _
         "FROM BOM_Headers AS bh " & _
         "INNER JOIN Projects AS p ON bh.ProjectID = p.ProjectID " & _
-        "WHERE bh.Status = 'Committed' " & _
+        "WHERE bh.ImportStatus = 'Committed' " & _
         "ORDER BY bh.ImportDate DESC;")
 End Sub

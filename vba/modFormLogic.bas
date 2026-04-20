@@ -124,7 +124,7 @@ Public Sub LogChange(tableName As String, recordID As Long, _
                      fieldName As String, oldVal As Variant, newVal As Variant)
     On Error Resume Next
     CurrentDb.Execute "INSERT INTO Audit_Log " & _
-        "(LogDate, UserName, Action, TableName, RecordID, FieldName, OldValue, NewValue) " & _
+        "(LogDate, UserName, LogAction, TableName, RecordID, FieldName, OldValue, NewValue) " & _
         "VALUES (Now(), '" & Environ("USERNAME") & "', 'UPDATE', '" & tableName & "', " & _
         recordID & ", '" & fieldName & "', '" & _
         Replace(CStr(Nz(oldVal, "")), "'", "''") & "', '" & _
@@ -146,7 +146,7 @@ Public Sub SearchComponents(frm As Form, searchText As String)
     term = Replace(Trim(searchText), "'", "''")
 
     frm.RecordSource = "SELECT c.ComponentID, c.MPN, m.ManufacturerName, " & _
-        "c.Description, c.ComponentType, c.Package, c.Value, " & _
+        "c.Description, c.ComponentType, c.Package, c.ComponentValue, " & _
         "ls.StatusName AS Lifecycle, qs.QualName AS QualStatus, c.IsPreferred " & _
         "FROM ((Components AS c " & _
         "INNER JOIN Manufacturers AS m ON c.ManufacturerID = m.ManufacturerID) " & _
@@ -176,7 +176,7 @@ Public Sub ShowWhereUsed(componentID As Long, mpn As String)
           "FROM (BOM_Items AS bi " & _
           "INNER JOIN BOM_Headers AS bh ON bi.HeaderID = bh.HeaderID) " & _
           "INNER JOIN Projects AS p ON bh.ProjectID = p.ProjectID " & _
-          "WHERE bi.ComponentID = " & componentID & " AND bh.Status = 'Committed' " & _
+          "WHERE bi.ComponentID = " & componentID & " AND bh.ImportStatus = 'Committed' " & _
           "ORDER BY p.ProjectCode"
 
     ' Save as a temp query and open it

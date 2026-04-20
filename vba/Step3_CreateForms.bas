@@ -93,7 +93,7 @@ Private Sub BuildForm_Components()
     fNames(1) = "ManufacturerID"  : fLabels(1) = "Manufacturer:"
     fNames(2) = "ComponentType"   : fLabels(2) = "Type:"
     fNames(3) = "Package"         : fLabels(3) = "Package:"
-    fNames(4) = "Value"           : fLabels(4) = "Value:"
+    fNames(4) = "ComponentValue"   : fLabels(4) = "Value:"
     fNames(5) = "Description"     : fLabels(5) = "Description:"
     fNames(6) = "Datasheet_URL"   : fLabels(6) = "Datasheet URL:"
 
@@ -155,7 +155,7 @@ Private Sub BuildForm_Projects()
     fNames(1) = "ProjectName"  : fLabels(1) = "Project Name:"
     fNames(2) = "PCB_Rev"      : fLabels(2) = "PCB Revision:"
     fNames(3) = "Owner"        : fLabels(3) = "Owner:"
-    fNames(4) = "Status"       : fLabels(4) = "Status:"
+    fNames(4) = "ProjectStatus" : fLabels(4) = "Status:"
     fNames(5) = "Notes"        : fLabels(5) = "Notes:"
 
     Dim i As Integer
@@ -408,7 +408,7 @@ Private Sub BuildForm_Dashboard()
         "=DCount(""*"",""qry_ComponentsNoAlternatives"",""Lifecycle IN ('Obsolete','NRND')"")", _
         300, 3660
     AddStatLabel frm, "lblStatImports", "Total BOM Imports:", _
-        "=DCount(""*"",""BOM_Headers"",""Status='Committed'"")", 300, 4040
+        "=DCount(""*"",""BOM_Headers"",""ImportStatus='Committed'"")", 300, 4040
 
     ' Reports section
     Dim lblRep As Control
